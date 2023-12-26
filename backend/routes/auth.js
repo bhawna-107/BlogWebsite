@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
             return res.status(401).json("Wrong credentials");
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: "3d" });
+        const token = jwt.sign({ id: user._id , userName: user.username, email: user.email}, process.env.SECRET, { expiresIn: "3d" });
 
         // Omit the password field from the response
         const { password, ...info } = user._doc;
@@ -103,5 +103,18 @@ router.get("/logout", async(req,res) =>{
 //         // }
 //     }
 // })
+
+
+//REFETCH USER
+
+router.get("/refetch", (req,res)=>{
+    const token = req.cookies.jwttoken;
+    jwt.verify(token, process.env.SECRET, {}, async (err,data) =>{
+        if(err){
+            return res.status(404).json(err);
+        }
+        res.status(200).json(data);
+    })
+})
 
 module.exports = router;

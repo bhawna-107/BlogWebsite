@@ -26,7 +26,11 @@ const PostSchema = new mongoose.Schema({
     userId:{
         type:String,
         required:true
-    }
+    },
+    categories:{
+        type:Array,
+        
+    },
 
 }, {timestamps:true});
 

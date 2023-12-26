@@ -1,10 +1,12 @@
-import React , {useState} from 'react'
+import React , {useContext, useState} from 'react'
 import axios from 'axios';
 import {url} from '../url';
 import { Link, useNavigate,  } from 'react-router-dom'
+import { UserContext } from '../context/usercontext';
 
 const Login = () => {
 
+  const {setUser} = useContext(UserContext);
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [err, setErr] = useState(false);
@@ -12,7 +14,8 @@ const Login = () => {
   
   const handleLogin = async() =>{
     try{
-      const res= await axios.post(url+ "/api/auth/login", {email,password});
+      const res= await axios.post(url+ "/api/auth/login", {email,password}, {withCredentials:true});
+      setUser(res.data);
       setEmail(res.data.email);
       setPassword(res.data.password);
       setErr(false);
